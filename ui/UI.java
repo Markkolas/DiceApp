@@ -5,10 +5,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 
+import main.Main;
+
 @SuppressWarnings("serial")
 public class UI extends JFrame implements MouseListener{
 	private JButton[] diceButton = new JButton[8];
-	private JTextArea[] timeBox = new JTextArea[8];
+	private JTextField[] timeBox = new JTextField[8];
 	private JTextArea resultBox;
 	
 	//Intancacianos array de constantes para emplazamiento de componentes
@@ -20,11 +22,12 @@ public class UI extends JFrame implements MouseListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new GridBagLayout());
 		
-		//Constant property of c
-		//c.fill = GridBagConstraints.BOTH;
+		//Constant property of c across cells
+		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
-		c.weighty = 1;
-		c.anchor = GridBagConstraints.CENTER;
+		c.weighty = 0.5;
+		//c.anchor = GridBagConstraints.CENTER;
+		c.insets = new Insets(10,10,10,10);
 		
 		startButtons();
 		startBoxes();
@@ -39,7 +42,7 @@ public class UI extends JFrame implements MouseListener{
 		
 		for (int i=0; i<8; i++) {
 			diceButton[i] = new JButton();
-			diceButton[i].setMaximumSize(new Dimension(50,50));
+			diceButton[i].addMouseListener(this);
 			
 			c.gridy = i;
 			
@@ -53,8 +56,8 @@ public class UI extends JFrame implements MouseListener{
 		c.gridx = 1;
 		
 		for (int i=0; i<8; i++) {
-			timeBox[i] = new JTextArea();
-			timeBox[i].setMaximumSize(new Dimension(50,50));
+			timeBox[i] = new JTextField("1");
+			timeBox[i].setHorizontalAlignment(JTextField.CENTER);
 			
 			c.gridy = i;
 			
@@ -64,6 +67,7 @@ public class UI extends JFrame implements MouseListener{
 	
 	private void startResultField() {
 		resultBox = new JTextArea();
+		resultBox.setEditable(false);
 		
 		c.gridx = 0;
 		c.gridy = 8;
@@ -82,6 +86,14 @@ public class UI extends JFrame implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		JButton pressedButton = (JButton)e.getSource();
+		
+		int i = 0;
+		
+		while (diceButton[i] != pressedButton)
+			i++;
+		
+		Main.roll(i);
 		
 	}
 
@@ -94,13 +106,13 @@ public class UI extends JFrame implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 	}
 	
 }
