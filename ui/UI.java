@@ -1,6 +1,6 @@
 package ui;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
@@ -13,9 +13,34 @@ public class UI extends JFrame implements MouseListener{
 	private JTextArea resultBox;
 	
 	public void startUI() {
-		this.setTitle("DiceApp");
-		this.setSize(700,200);
-		this.setLayout(new BorderLayout());
+		setTitle("DiceApp");
+		setSize(200,400);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(new GridBagLayout());
+		
+		//Intancacianos constantes para emplazamiento de componentes
+		GridBagConstraints[] c = { new GridBagConstraints(),
+								new GridBagConstraints(),
+								new GridBagConstraints()
+		};
+		
+		//Definicion de atributos
+		c[0].gridx = 0;
+		c[0].gridy = 0;
+		c[0].gridheight = 2;
+		
+		c[1].gridx = 2;
+		c[1].gridy = 0;
+		c[1].gridheight = 2;
+		
+		c[2].gridx = 0;
+		c[2].gridy = 2;
+		c[2].gridwidth = 3;
+		
+		c[0].fill = GridBagConstraints.BOTH;
+		c[1].fill = GridBagConstraints.BOTH;
+		c[2].fill = GridBagConstraints.BOTH;
+		
 		
 		dicePanel = new JPanel();
 		dicePanel.setLayout(new BoxLayout(dicePanel, BoxLayout.Y_AXIS));
@@ -23,15 +48,17 @@ public class UI extends JFrame implements MouseListener{
 		timesPanel = new JPanel();
 		timesPanel.setLayout(new BoxLayout(timesPanel, BoxLayout.Y_AXIS));
 		
-		this.startButtons();
-		this.startBoxes();
-		this.startResultField();
+		startButtons();
+		startBoxes();
+		startResultField();
 		
-		this.getContentPane().add(dicePanel, "West");
-		this.getContentPane().add(timesPanel,"East");
-		this.add(resultBox,-1);
+		add(dicePanel,c[0]);
+		add(timesPanel,c[1]);
+		add(resultBox,c[2]);
 		
-		this.setVisible(true);
+		setVisible(true);
+		
+		System.out.print("dicePanel size: "+timesPanel.getSize());
 		
 	}
 	
@@ -49,7 +76,6 @@ public class UI extends JFrame implements MouseListener{
 		for (int i=0; i<8; i++) {
 			timeBox[i] = new JTextArea();
 			timesPanel.add(timeBox[i]);
-			timeBox[i].setEditable(true);
 		}
 	}
 	
