@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.util.Arrays;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 
 import main.Main;
 
@@ -14,6 +15,7 @@ public class UI extends JFrame implements MouseListener{
 	private JButton[] diceButton = new JButton[8];
 	private JTextField[] timeBox = new JTextField[8];
 	private JTextArea resultBox;
+	private JScrollPane resultBoxScroll;
 	
 	//Intancacianos array de constantes para emplazamiento de componentes
 	GridBagConstraints c = new GridBagConstraints();
@@ -71,8 +73,14 @@ public class UI extends JFrame implements MouseListener{
 	
 	private void startResultField() {
 		resultBox = new JTextArea();
+		resultBoxScroll = new JScrollPane(resultBox);
+		
+		//Quick "hack" to maintain scroll at new lines
+		DefaultCaret caret = (DefaultCaret)resultBox.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		
+		resultBox.setLineWrap(true);
 		resultBox.setEditable(false);
-		resultBox.setAutoscrolls(true);
 		resultBox.setText("DiceApp V1 aka \"El Feo\". Free license, this program is shit. Enjoy!\n"
 				+ "Use: left buttons to throw dice, right to determine number of throws\n"
 				+ "The dices are waiting, lets go!\n\n");
@@ -82,13 +90,13 @@ public class UI extends JFrame implements MouseListener{
 		c.gridwidth = 2;
 		c.weighty = 1;
 		
-		add(resultBox,c);
+		add(resultBoxScroll,c);
 		
 	}
 	
 	public void showResults(int[] results, int diceIndex, int timesToRoll, String type) {
-		resultBox.append("Has tirado un "+type+" "+timesToRoll+" veces\n"
-				+ "Resultado(s): "+Arrays.toString(results)+"\n\n");
+		resultBox.append("\n\nHas tirado un "+type+" "+timesToRoll+" veces\n"
+				+ "Resultado(s): "+Arrays.toString(results));
 	}
 
 	@Override
