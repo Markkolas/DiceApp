@@ -5,9 +5,11 @@ import java.util.Random;
 public class Dice {
 	private int faces;
 	private Random r1;
+	private String tipo;
 	
-	public Dice(int faces) {
+	public Dice(int faces, String tipo) {
 		this.faces = faces;
+		this.tipo = tipo;
 		r1 = new Random();
 	}
 	
@@ -19,5 +21,9 @@ public class Dice {
 		}
 		
 		return results;
+	}
+	
+	public String getTipo() {
+		return tipo;
 	}
 }
